@@ -33,7 +33,7 @@ public class Maestro {
     @Column(name = "APELLIDO_PATERNO",nullable = false, length = 50)
     @NotBlank(message = "El apellido paterno es requrido")
     @Size(min = 3, max = 50, message = "El apellido paterno debe tener entre 3 y 50 caracteres")
-    private String apellidoPatterno;
+    private String apellidoPaterno;
 
     @Column(name = "APELLIDO_MATERNO", nullable = false, length = 50)
     @NotBlank(message = "El apelldio materno es requrido")

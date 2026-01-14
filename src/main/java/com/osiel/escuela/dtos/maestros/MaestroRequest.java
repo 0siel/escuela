@@ -19,7 +19,7 @@ public record MaestroRequest(
 
         @NotBlank(message = "El apellido paterno es requrido")
         @Size(min = 3, max = 50, message = "El apellido paterno debe tener entre 3 y 50 caracteres")
-        String apellidoPatterno,
+        String apellidoPaterno,
         @NotBlank(message = "El apelldio materno es requrido")
         @Size(min = 3, max = 50, message = "El apellido materno debe tener entre 3 y 50 caracteres")
         String apellidoMaterno,
@@ -36,6 +36,4 @@ public record MaestroRequest(
         @Size(min = 10, max=10, message = "El teléfono debe tener exactamente 10 caracteres")
         @Pattern(regexp = "^[0-9]{10}$", message = "El teléfono debe contener 10 dígitos numéricos")
         String telefono
-) {
-
-}
+) {}

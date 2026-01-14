@@ -38,7 +38,10 @@ public class MaestroServiceImpl implements MaestroService{
 
     @Override
     public MaestroResponse registrar(MaestroRequest request) {
+        existsEmail(request.email());
+        existsTelefono(request.telefono());
         Maestro maestro = maestroRepository.save(maestroMapper.requestToEntity(request));
+
         return maestroMapper.entityToResponse(maestro);
     }
 
@@ -47,11 +50,22 @@ public class MaestroServiceImpl implements MaestroService{
 
         Maestro maestro = getMaestroOrThrow(id);
 
+        boolean emailCambio = !maestro.getEmail().equalsIgnoreCase(request.email());
+        boolean telefonoCambio = !maestro.getTelefono().equals(request.telefono());
+
+        if(emailCambio){
+            existsEmail(request.email());
+            maestro.setEmail(request.email());
+        }
+
+        if(telefonoCambio){
+            existsTelefono(request.telefono());
+            maestro.setTelefono(request.telefono());
+        }
+
         maestro.setNombre(request.nombre());
-        maestro.setApellidoPatterno(request.apellidoPatterno());
-        maestro.setApellidoMaterno(request.apellidoPatterno());
-        maestro.setEmail(request.email());
-        maestro.setTelefono(request.telefono());
+        maestro.setApellidoPaterno(request.apellidoPaterno());
+        maestro.setApellidoMaterno(request.apellidoPaterno());
 
         Maestro actualizado = maestroRepository.save(maestro);
         log.info("Maestro actalizado: {}", actualizado);
@@ -76,6 +90,18 @@ public class MaestroServiceImpl implements MaestroService{
     Maestro getMaestroOrThrow(Long id){
         return maestroRepository.findById(id).orElseThrow(()->
                 new NoSuchElementException("No se encontró el maestro con el ID: " + id ));
+    }
+
+    private void existsEmail(String email){
+        if(maestroRepository.existsByEmailIgnoreCase(email)){
+            throw new IllegalArgumentException("Ya existe un maestro registrado con el email: " + email.toLowerCase());
+        }
+    }
+
+    private void existsTelefono(String telefono){
+        if(maestroRepository.existsByTelefono(telefono)){
+            throw new IllegalArgumentException("Ya existe un maestro registrado con ese teléfono: " + telefono);
+        }
     }
 
 
