@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -28,6 +30,9 @@ public class Aula {
     @Min(value = 10, message = "La capacidad mínima es 10")
     @Max(value = 50, message = "La capacidad máxima es 50")
     private Integer capacidad;
+
+    @OneToMany(mappedBy = "aula")
+    private List<Grupo> grupos = new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {

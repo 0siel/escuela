@@ -17,7 +17,7 @@ import java.util.Objects;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
+
 public class Inscripcion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,6 +38,9 @@ public class Inscripcion {
     @NotNull(message = "Las fecha de inscripción es requrida")
     @PastOrPresent(message = "La fecha de inscripción no puede ser futura")
     private LocalDate fechaInscripcion = LocalDate.now();
+
+    @OneToOne(mappedBy = "inscripcion")
+    private Calificacion calificacion;
 
     @Override
     public boolean equals(Object o) {

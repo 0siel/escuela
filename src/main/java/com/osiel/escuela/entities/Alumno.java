@@ -9,6 +9,8 @@ import lombok.AllArgsConstructor;
 import lombok.ToString;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -17,7 +19,6 @@ import java.util.Objects;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 public class Alumno {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -56,6 +57,9 @@ public class Alumno {
     @NotNull(message="La fecha de ingreso es requerida")
     @PastOrPresent(message = "La fecha de ingreso no puede ser futura")
     private LocalDate fechaIngreso = LocalDate.now();
+
+    @OneToMany(mappedBy = "alumno")
+    private List<Inscripcion> inscripciones = new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {

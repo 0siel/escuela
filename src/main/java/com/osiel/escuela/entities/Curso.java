@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 
@@ -13,7 +15,6 @@ import java.util.Objects;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 public class Curso {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,6 +35,9 @@ public class Curso {
     @Min(value=1, message = "Los créditos deben ser mayores a 1")
     @Max(value=10, message = "Los créditos deben ser menores a 10")
     private Integer creditos;
+
+    @OneToMany(mappedBy = "curso")
+    private List<Grupo> grupos = new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {

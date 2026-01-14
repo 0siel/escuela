@@ -7,6 +7,8 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 
@@ -16,7 +18,6 @@ import java.util.Objects;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 public class Maestro {
 
     @Id
@@ -38,6 +39,9 @@ public class Maestro {
     @NotBlank(message = "El apelldio materno es requrido")
     @Size(min = 3, max = 50, message = "El apellido materno debe tener entre 3 y 50 caracteres")
     private String apellidoMaterno;
+
+    @OneToMany(mappedBy = "maestro")
+    private List<Grupo> grupos = new ArrayList<>();
 
     @Column(nullable = false, unique = true, length = 100)
     @NotBlank(message = "El email es requrido")

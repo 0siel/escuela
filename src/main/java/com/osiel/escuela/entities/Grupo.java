@@ -6,6 +6,8 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -14,7 +16,6 @@ import java.util.Objects;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-
 public class Grupo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,6 +41,12 @@ public class Grupo {
     @NotBlank(message = "El periodo es requerido")
     @Size(min = 6, max = 20, message = "El periodo debe tener entre 6 y 20 caracteres")
     private String periodo;
+
+    @OneToMany(mappedBy = "grupo")
+    private List<Inscripcion> inscripcions = new ArrayList<>();
+
+    @OneToMany(mappedBy = "grupo")
+    private List<Horario> horarios = new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {
