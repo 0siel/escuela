@@ -42,14 +42,13 @@ public class Alumno {
 
     @Column(nullable = false, unique = true, length = 100)
     @NotBlank(message = "El email es requrido")
-    @Size(max = 50, message = "El email debe tener máximo 100 caracteres")
+    @Size(max = 100, message = "El email debe tener máximo 100 caracteres")
     @Email(message = "El email debe tener un formato válido: (ejemplo@ejemplo.com)")
     private String email;
 
     @Column(nullable = false, unique = true, length = 10)
     @NotBlank(message = "La matricula es requerida")
     @Size(min=10,max = 10, message = "La matrícula debe tener exactamente 10 caracteres")
-
     private String matricula;
 
 

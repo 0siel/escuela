@@ -40,8 +40,6 @@ public class Maestro {
     @Size(min = 3, max = 50, message = "El apellido materno debe tener entre 3 y 50 caracteres")
     private String apellidoMaterno;
 
-    @OneToMany(mappedBy = "maestro")
-    private List<Grupo> grupos = new ArrayList<>();
 
     @Column(nullable = false, unique = true, length = 100)
     @NotBlank(message = "El email es requrido")
@@ -54,6 +52,9 @@ public class Maestro {
     @Size(min = 10, max=10, message = "El teléfono debe tener exactamente 10 caracteres")
     @Pattern(regexp = "^[0-9]{10}$", message = "El teléfono debe contener 10 dígitos numéricos")
     private String telefono;
+
+    @OneToMany(mappedBy = "maestro")
+    private List<Grupo> grupos = new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {

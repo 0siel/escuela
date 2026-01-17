@@ -43,7 +43,7 @@ public class Grupo {
     private String periodo;
 
     @OneToMany(mappedBy = "grupo")
-    private List<Inscripcion> inscripcions = new ArrayList<>();
+    private List<Inscripcion> inscripciones = new ArrayList<>();
 
     @OneToMany(mappedBy = "grupo")
     private List<Horario> horarios = new ArrayList<>();

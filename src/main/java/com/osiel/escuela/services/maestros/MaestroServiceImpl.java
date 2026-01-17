@@ -34,8 +34,6 @@ public class MaestroServiceImpl implements MaestroService{
         return maestroMapper.entityToResponse(getMaestroOrThrow(id));
     }
 
-
-
     @Override
     public MaestroResponse registrar(MaestroRequest request) {
         existsEmail(request.email());
@@ -68,7 +66,7 @@ public class MaestroServiceImpl implements MaestroService{
         maestro.setApellidoMaterno(request.apellidoPaterno());
 
         Maestro actualizado = maestroRepository.save(maestro);
-        log.info("Maestro actalizado: {}", actualizado);
+        log.info("Maestro actualizado: {}", actualizado);
 
         return maestroMapper.entityToResponse(actualizado);
 

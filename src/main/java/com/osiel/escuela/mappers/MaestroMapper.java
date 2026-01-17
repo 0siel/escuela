@@ -4,11 +4,9 @@ package com.osiel.escuela.mappers;
 import com.osiel.escuela.dtos.maestros.DatosCurso;
 import com.osiel.escuela.dtos.maestros.MaestroRequest;
 import com.osiel.escuela.dtos.maestros.MaestroResponse;
-import com.osiel.escuela.entities.Grupo;
 import com.osiel.escuela.entities.Maestro;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -43,17 +41,21 @@ public class MaestroMapper implements CommonMapper<MaestroRequest, MaestroRespon
         return maestro;
     }
 
-    private List< DatosCurso> grupoToDatosCurso(Maestro maestro){
+    private List<DatosCurso> grupoToDatosCurso(Maestro maestro){
         if(maestro == null) return null;
 
         return maestro.getGrupos().stream().map(grupo -> new DatosCurso(
                 grupo.getCurso().getNombre(),
                 grupo.getAula().getNombre(),
-                grupo.getHorarios().stream().map(h -> String.join(" ", h.getDia().getDescripcion(), h.getHoraInicio(), h.getHoraFin())).toList(),
+                grupo.getHorarios().stream()
+                        .map(h -> String.join(" ", h.getDia().getDescripcion(), h.getHoraInicio().toString(), h.getHoraFin().toString())).toList(),
                 grupo.getPeriodo()
         )).toList();
 
-        /*
+
+    }
+
+    /*
         List<DatosCurso> datosCurso = new ArrayList<>();
 
         maestro.getGrupos().forEach(grupo->{
@@ -74,5 +76,4 @@ public class MaestroMapper implements CommonMapper<MaestroRequest, MaestroRespon
         });
         return  datosCurso;
         * */
-    }
 }

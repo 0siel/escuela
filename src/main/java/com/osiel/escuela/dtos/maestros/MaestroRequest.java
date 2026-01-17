@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public record MaestroRequest(
-
         @NotBlank(message = "El nombre es requrido")
         @Size(min = 3, max = 50, message = "El nombre debe tener entre 3 y 50 caracteres")
         String nombre,
@@ -20,12 +19,10 @@ public record MaestroRequest(
         @NotBlank(message = "El apellido paterno es requrido")
         @Size(min = 3, max = 50, message = "El apellido paterno debe tener entre 3 y 50 caracteres")
         String apellidoPaterno,
+
         @NotBlank(message = "El apelldio materno es requrido")
         @Size(min = 3, max = 50, message = "El apellido materno debe tener entre 3 y 50 caracteres")
         String apellidoMaterno,
-
-        @OneToMany(mappedBy = "maestro")
-        List<Grupo> grupos,
 
         @NotBlank(message = "El email es requrido")
         @Size(max = 50, message = "El email debe tener máximo 100 caracteres")

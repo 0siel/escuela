@@ -2,6 +2,8 @@ package com.osiel.escuela.controllers;
 
 
 
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import com.osiel.escuela.dtos.ErrorResponse;
 import com.osiel.escuela.exceptions.EntidadRelacionadaException;
 import jakarta.validation.ConstraintViolationException;
@@ -15,18 +17,14 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.NoSuchElementException;
 
 @RestControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler {
-
-    @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<com.osiel.escuela.dtos.ErrorResponse> handleHttpMessageNotReadableException(HttpMessageNotReadableException e) {
-        return ResponseEntity.badRequest().body(
-                new ErrorResponse(HttpStatus.BAD_REQUEST.value(), e.getMostSpecificCause().getMessage())
-        );
-    }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<ErrorResponse> handleDataIntegrityViolationException(DataIntegrityViolationException e) {
@@ -94,5 +92,32 @@ public class GlobalExceptionHandler {
                         e.getMessage() == null ? e.getCause().toString() : e.getMessage())
         );
     }
+
+
+
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+        public ResponseEntity<Map<String, Object>> handleJsonError(HttpMessageNotReadableException ex) {
+            Map<String, Object> response = new HashMap<>();
+            response.put("timestamp", LocalDateTime.now());
+            response.put("codigo", HttpStatus.BAD_REQUEST.value());
+
+            String mensaje = "Error en el formato del JSON: ";
+
+            // Intentamos extraer el detalle de qué campo falló
+            if (ex.getCause() instanceof InvalidFormatException ife) {
+                String campo = ife.getPath().get(0).getFieldName();
+                mensaje += "El valor '" + ife.getValue() + "' no es válido para el campo '" + campo + "'.";
+            } else if (ex.getCause() instanceof MismatchedInputException mie) {
+                String campo = mie.getPath().isEmpty() ? "desconocido" : mie.getPath().get(0).getFieldName();
+                mensaje += "El tipo de dato para el campo '" + campo + "' es incorrecto.";
+            } else {
+                mensaje += "Asegúrate de que el JSON esté bien formado y los tipos de datos sean correctos.";
+            }
+
+            response.put("mensaje", mensaje);
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+
 
 }

@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalTime;
 import java.util.Objects;
 
 @Entity
@@ -24,23 +25,23 @@ public class Horario {
     @Column(name="ID_HORARIO", nullable = false)
     private Long id;
 
-    @ManyToOne(fetch= FetchType.LAZY)
-    @JoinColumn(name="ID_GRUPO", nullable = false)
-    private Grupo grupo;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 15)
-    @NotNull(message = "El diá de la semana es requrido")
+    @NotNull(message = "El diá de la semana es requerido")
     private DiaSemana dia;
 
     @Column(name = "HORA_INICIO", nullable = false, length = 5)
-    @NotBlank(message = "La hora de inicio es requrida")
-    @Pattern(regexp = "^[0-9]{2}:[0-9]{2}$", message = "El formato de la hora de inicio es HH:mm")
-    private String horaInicio;
+    @NotNull()
+    private LocalTime horaInicio;
 
     @Column(name="HORA_FIN", nullable = false, length = 5)
-    @Pattern(regexp = "^[0-9]{2}:[0-9]{2}$", message = "El formato de la hora de inicio es HH:mm")
-    private String horaFin;
+    @NotNull(message = "La hora de término es requerida")
+    private LocalTime horaFin;
+
+    @ManyToOne(fetch= FetchType.LAZY)
+    @JoinColumn(name="ID_GRUPO", nullable = false)
+    private Grupo grupo;
 
     @Override
     public boolean equals(Object o) {

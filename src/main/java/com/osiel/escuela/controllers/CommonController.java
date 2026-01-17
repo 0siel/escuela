@@ -12,7 +12,7 @@ import java.util.List;
 
 @AllArgsConstructor
 @Validated
-public class CommonController <RQ, RS,S extends CrudService<RQ, RS>>{
+public class CommonController <RQ, RS, S extends CrudService<RQ, RS>>{
     protected S service;
 
     @GetMapping

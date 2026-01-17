@@ -7,4 +7,12 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface AlumnoRepository extends JpaRepository<Alumno, Long> {
+
+    boolean existsByEmailIgnoreCase(String email);
+
+    boolean existsByMatriculaIgnoreCase(String matricula);
+
+    boolean existsByEmailAndIdNot(String email, Long id );
+
+
 }
