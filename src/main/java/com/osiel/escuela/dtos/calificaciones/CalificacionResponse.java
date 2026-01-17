@@ -7,6 +7,8 @@ public record CalificacionResponse(
         Long id,
         Long inscripcion,
         BigDecimal calificacion,
+        String curso,
+        String alumno,
         LocalDate fechaRegistro
 ) {
 }

@@ -38,4 +38,6 @@ public interface HorarioRepository extends JpaRepository<Horario, Long> {
             @Param("inicio") LocalTime inicio,
             @Param("fin") LocalTime fin
     );
+
+    boolean existsByGrupoId(Long id);
 }

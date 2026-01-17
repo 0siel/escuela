@@ -8,6 +8,7 @@ import com.osiel.escuela.entities.Grupo;
 import com.osiel.escuela.entities.Inscripcion;
 import com.osiel.escuela.mappers.InscripcionMapper;
 import com.osiel.escuela.repositories.AlumnoRepository;
+import com.osiel.escuela.repositories.CalificacionRepository;
 import com.osiel.escuela.repositories.GrupoRepository;
 import com.osiel.escuela.repositories.InscripcionRepository;
 import lombok.AllArgsConstructor;
@@ -17,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
 @Service
 @Transactional
@@ -28,6 +30,7 @@ public class InscripcionServiceImpl implements InscripcionService{
     private final InscripcionMapper inscripcionMapper;
     private final AlumnoRepository alumnoRepository;
     private final GrupoRepository grupoRepository;
+    private final CalificacionRepository calificacionRepository;
 
 
     @Override
@@ -72,7 +75,12 @@ public class InscripcionServiceImpl implements InscripcionService{
             throw new IllegalArgumentException(String.format("El alumno %s ya s está inscrito en este grupo: %s", alumno.getId(), grupo.getId()));
         }
 
+
         Inscripcion inscripcion = getInscripcionOrThrow(id);
+
+        if(Objects.equals(grupo, inscripcion.getGrupo()) && Objects.equals(alumno, inscripcion.getAlumno())){
+            throw new IllegalArgumentException(String.format("Ya se realizó una inscripción con el alumno %s y el grupo %s", alumno.getId(), grupo.getId()));
+        };
         inscripcion.setAlumno(alumno);
         inscripcion.setGrupo(grupo);
 
@@ -84,6 +92,10 @@ public class InscripcionServiceImpl implements InscripcionService{
 
     @Override
     public void eliminar(Long id) {
+        Inscripcion inscripcion = getInscripcionOrThrow(id);
+        if (inscripcion.getCalificacion() != null && inscripcion.getCalificacion().getCalificacion() != null) {
+            throw new RuntimeException("No es posible eliminar la inscripción: El alumno ya cuenta con una calificación registrada.");
+        }
         inscripcionRepository.delete(getInscripcionOrThrow(id));
 
     }

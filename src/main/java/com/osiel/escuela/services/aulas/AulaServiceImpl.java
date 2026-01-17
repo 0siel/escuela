@@ -5,6 +5,7 @@ import com.osiel.escuela.dtos.aulas.AulaResponse;
 import com.osiel.escuela.entities.Aula;
 import com.osiel.escuela.mappers.AulaMapper;
 import com.osiel.escuela.repositories.AulaRepository;
+import com.osiel.escuela.repositories.GrupoRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,7 @@ import java.util.NoSuchElementException;
 public class AulaServiceImpl implements AulaService{
     private final AulaRepository aulaRepository;
     private final AulaMapper aulaMapper;
+    private final GrupoRepository grupoRepository;
 
 
     @Override
@@ -58,6 +60,13 @@ public class AulaServiceImpl implements AulaService{
 
     @Override
     public void eliminar(Long id) {
+        getAulaOrThrow(id);
+
+        if (grupoRepository.existsByAulaId(id)) {
+            throw new IllegalArgumentException("No se puede eliminar: El aula tiene grupos activos. " +
+                    "Elimina primero los grupos relacionados.");
+        }
+
         aulaRepository.delete(getAulaOrThrow(id));
 
     }

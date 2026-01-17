@@ -5,6 +5,7 @@ import com.osiel.escuela.dtos.cursos.CursoResponse;
 import com.osiel.escuela.entities.Curso;
 import com.osiel.escuela.mappers.CursoMapper;
 import com.osiel.escuela.repositories.CursoRepository;
+import com.osiel.escuela.repositories.GrupoRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,7 @@ import java.util.List;
 public class CursoServiceImpl implements CursoService{
     private final CursoRepository cursoRepository;
     private final CursoMapper cursoMapper;
+    private final GrupoRepository grupoRepository;
 
     @Override
     public List<CursoResponse> listar() {
@@ -53,6 +55,12 @@ public class CursoServiceImpl implements CursoService{
 
     @Override
     public void eliminar(Long id) {
+        getCursoOrThrow(id);
+
+        if (grupoRepository.existsByCursoId(id)) {
+            throw new IllegalArgumentException("No se puede eliminar: El curso tiene grupos activos. " +
+                    "Elimina primero los grupos relacionados.");
+        }
         cursoRepository.delete(getCursoOrThrow(id));
 
     }

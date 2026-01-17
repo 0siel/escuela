@@ -18,7 +18,7 @@ public class MaestroMapper implements CommonMapper<MaestroRequest, MaestroRespon
         List<DatosCurso> cursos = grupoToDatosCurso(entity);
         return new MaestroResponse(
                 entity.getId(),
-                String.join(" ",
+                String.join(" ", entity.getNombre(),
                         entity.getApellidoPaterno(), entity.getApellidoMaterno()),
                 entity.getEmail(),
                 entity.getTelefono(),

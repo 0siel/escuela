@@ -2,6 +2,7 @@ package com.osiel.escuela.mappers;
 
 import com.osiel.escuela.dtos.calificaciones.CalificacionRequest;
 import com.osiel.escuela.dtos.calificaciones.CalificacionResponse;
+import com.osiel.escuela.entities.Alumno;
 import com.osiel.escuela.entities.Calificacion;
 import com.osiel.escuela.entities.Inscripcion;
 import org.springframework.stereotype.Component;
@@ -13,10 +14,14 @@ public class CalificacionMapper implements CommonMapper<CalificacionRequest, Cal
     @Override
     public CalificacionResponse entityToResponse(Calificacion entity) {
         if(entity == null) return null;
+
+        Alumno alumno = entity.getInscripcion().getAlumno();
         return new CalificacionResponse(
                 entity.getId(),
                 entity.getInscripcion().getId(),
                 entity.getCalificacion(),
+                entity.getInscripcion().getGrupo().getCurso().getNombre(),
+                String.join(" ", alumno.getNombre(), alumno.getApellidoPaterno(), alumno.getApellidoMaterno()),
                 entity.getFechaRegistro()
         );
     }

@@ -72,7 +72,7 @@ public class AlumnoMapper implements CommonMapper<AlumnoRequest, AlumnoResponse,
         if (alumno == null) return null;
 
         return alumno.getInscripciones().stream()
-                // AGREGAMOS EL FILTRO AQUÍ TAMBIÉN
+
                 .filter(i -> i.getCalificacion() != null && i.getCalificacion().getCalificacion() != null)
                 .map(inscripcion -> new DatosCalificacion(
                         inscripcion.getGrupo().getCurso().getNombre(),
